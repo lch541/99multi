@@ -1,0 +1,492 @@
+:root{
+      --bg:#000;
+      --fg:rgba(255,255,255,.92);
+      --muted:rgba(255,255,255,.55);
+      --line:rgba(255,255,255,.14);
+      --panelA:rgba(255,255,255,.06);
+      --panelB:rgba(255,255,255,.03);
+    }
+    *{box-sizing:border-box}
+    html,body{
+      height:100%;
+      margin:0;
+      background:var(--bg);
+      color:var(--fg);
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Helvetica Neue",Arial;
+      overflow:hidden;
+      -webkit-user-select:none;
+      user-select:none;
+      touch-action:manipulation;
+    }
+    button{font:inherit}
+
+    /* ===== 固定画布：iPad 9 横屏 CSS 1080×810 ===== */
+    .stage{
+      position:fixed;
+      left:50%;
+      top:50%;
+      width:1080px;
+      height:810px;
+      transform:translate(-50%,-50%);
+      background:#000;
+    }
+    .stage.fit{ transform-origin:center center; }
+
+    .frame{
+      position:absolute;
+      left:0; top:0;
+      width:1080px; height:810px;
+      padding:18px;
+    }
+
+    .leftCard, .rightCard{
+      position:absolute;
+      top:18px; bottom:18px;
+      border:1px solid var(--line);
+      border-radius:22px;
+      background:linear-gradient(180deg, var(--panelA), var(--panelB));
+      overflow:hidden;
+    }
+    .leftCard{ left:18px; width:720px; }
+    .rightCard{ right:18px; width:300px; }
+
+    /* ===== 左侧：动态表头 + 数据区（10×10结构；列头不画格） ===== */
+    .gridInner{
+      position:absolute;
+      left:18px; right:18px;
+      top:18px; bottom:18px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.02);
+    }
+
+    .matrixBox{
+      position:absolute;
+      width:640px;
+      height:640px;
+      left:50%;
+      top:50%;
+      transform:translate(-50%,-50%);
+    }
+
+    .matrix{
+      position:absolute;
+      left:8px; top:8px;
+      width:624px; height:624px;
+      display:grid;
+      grid-template-columns:repeat(10,56px);
+      grid-template-rows:repeat(10,56px);
+      gap:6px;
+    }
+
+    /* 表头单元默认：行头仍保留“格子感” */
+    .hcell{
+      width:56px; height:56px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.012);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:900;
+      font-size:20px;
+      color:rgba(255,255,255,.85);
+    }
+    .hcell.blank{ color:transparent; }
+
+    /* 关键：列头（顶部）不画格子，只显示数字 */
+    .topHead{
+      border:none !important;
+      background:transparent !important;
+      border-radius:0 !important;
+      box-shadow:none !important;
+    }
+	
+	/* 追加：左边表头（行头）也不要格子，只显示数字 */
+	.leftHead{
+	  border:none !important;
+	  background:transparent !important;
+	  border-radius:0 !important;
+	  box-shadow:none !important;
+	}
+
+    .corner{
+      border:none !important;
+      background:transparent !important;
+      border-radius:0 !important;
+      color:rgba(255,255,255,.60);
+      font-size:20px;
+    }
+
+    .cell{
+      width:56px; height:56px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.02);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      overflow:hidden;
+    }
+	.cell .t{
+	  font-size:14px;          /* 原 18 */
+	  font-weight:900;
+	  letter-spacing:-0.2px;   /* 更紧凑 */
+	  opacity:0;
+	  transform:scale(.98);
+	  transition:opacity .12s ease, transform .12s ease;
+	  white-space:nowrap;
+	}
+    .cell.active{
+      border-color: rgba(64, 200, 255, .85);
+      background: radial-gradient(120% 120% at 50% 40%, rgba(64,200,255,.28), rgba(64,200,255,.08) 55%, rgba(255,255,255,.04) 70%);
+      box-shadow:
+        0 0 0 2px rgba(64,200,255,.35) inset,
+        0 0 18px rgba(64,200,255,.25),
+        0 0 36px rgba(64,200,255,.15);
+    }
+    .cell.active .t{opacity:1; transform:scale(1); color:#e9faff}
+    .cell.correct::after{
+      content:"";
+      position:absolute; inset:0;
+      background:rgba(255,255,255,.10);
+      opacity:0;
+      animation:pop .18s ease;
+    }
+    .cell.wrong::after{
+      content:"";
+      position:absolute; inset:0;
+      background:rgba(255,255,255,.06);
+      opacity:0;
+      animation:pop .22s ease;
+    }
+    @keyframes pop{0%{opacity:0}35%{opacity:1}100%{opacity:0}}
+
+    .guideV,.guideH{
+      animation: guideBreath 0.06s ease-in-out infinite alternate;
+    }
+    .guideV{
+      position:absolute;
+      pointer-events:none;
+      opacity:.55;
+      display:none;
+      width:0;
+      height:0; /* JS sets */
+      border-left:2px dashed rgba(255,255,255,.22);
+      transform:translateX(-1px);
+      z-index:1;
+    }
+    .guideH{
+      position:absolute;
+      pointer-events:none;
+      opacity:.55;
+      display:none;
+      width:0;  /* JS sets */
+      height:0;
+      border-top:2px dashed rgba(255,255,255,.22);
+      transform:translateY(-1px);
+      z-index:1;
+    }
+	
+	.guideV,.guideH{ z-index:1; }
+	.matrix{ position:absolute; z-index:2; }
+
+    /* ===== 右侧竖栏：固定区块 ===== */
+    .sideInner{
+      position:absolute;
+      left:14px; right:14px;
+      top:14px; bottom:14px;
+    }
+    .sec{
+      position:absolute;
+      left:0; right:0;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:18px;
+      background:rgba(255,255,255,.03);
+      padding:12px;
+      overflow:hidden;
+    }
+    .label{
+      color:var(--muted);
+      font-weight:900;
+      font-size:13px;
+      letter-spacing:.2px;
+    }
+
+	.sec.progress{
+	  top:0;
+	  height:250px;
+	}
+
+	.sec.time{
+	  top:266px;
+	  height:140px;
+	}
+
+	.sec.keypad{
+	  bottom:0;
+	  height:320px;
+	  padding-top:42px;
+	}
+
+
+    .sec.clear{bottom:0; height:90px; padding:0; background:rgba(255,255,255,.04);}
+
+    .scoreText{
+      position:absolute;
+      right:12px; top:10px;
+      font-weight:900;
+      font-size:14px;
+      color:rgba(255,255,255,.85);
+    }
+    .macaronBox{
+      position:absolute;
+      left:12px; right:12px;
+      top:34px;
+      height:92px;
+      border-radius:14px;
+      background:rgba(0,0,0,.25);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+    }
+    .macaronSvg{
+      width:180px; height:92px;
+      filter: drop-shadow(0 10px 16px rgba(0,0,0,.45));
+      display:block;
+    }
+	
+	.iceCreamBox{
+	  position:absolute;
+	  left:12px;
+	  right:12px;
+	  top:34px;
+	  height:160px;
+	  display:flex;
+	  align-items:center;
+	  justify-content:center;
+	}
+
+	.iceCreamImg{
+      height:160px;
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,.45));
+      object-fit:contain;
+    }
+	
+	
+    .meltCover{
+      position:absolute;
+      inset:0;
+      background:var(--bg);
+      clip-path: inset(var(--meltTop) 0 0 0 round 14px);
+      transition: clip-path .16s ease;
+      pointer-events:none;
+    }
+    .progBar{
+      position:absolute;
+      left:12px; right:12px;
+      bottom:12px;
+      height:18px;
+      border-radius:999px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+      overflow:hidden;
+    }
+    .progFill{
+      height:100%;
+      width:0%;
+      background:rgba(255,255,255,.70);
+      transition: width .16s ease;
+    }
+
+    .timeBar{
+      position:absolute;
+      left:12px; right:12px;
+      top:34px;
+      height:16px;
+      border-radius:999px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+      overflow:hidden;
+    }
+    .timeFill{
+      height:100%;
+      width:100%;
+      background:rgba(255,255,255,.70);
+      transition: width .05s linear;
+    }
+    .timeDigital{
+      position:absolute;
+      left:12px; right:12px;
+      bottom:12px;
+      height:52px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.04);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:900;
+      font-size:22px;
+      letter-spacing:1px;
+      color:rgba(255,255,255,.88);
+    }
+
+    .inputHint{
+      position:absolute;
+      left:12px; top:12px;
+      font-size:12px;
+      color:var(--muted);
+      font-weight:900;
+    }
+    .inputValue{
+      position:absolute;
+      right:12px; top:8px;
+      font-size:22px;
+      font-weight:900;
+      letter-spacing:1px;
+      color:rgba(255,255,255,.88);
+      min-width:80px;
+      text-align:right;
+    }
+    .keypadGrid{
+      position:absolute;
+      left:12px; right:12px;
+      top:42px; bottom:12px;
+      display:grid;
+      grid-template-columns: repeat(3, 80px);
+      grid-auto-rows: 58px;
+      gap:10px;
+      justify-content:center;
+      align-content:start;
+    }
+    .key{
+      width:80px; height:58px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.06);
+      color:var(--fg);
+      font-size:22px;
+      font-weight:900;
+      cursor:pointer;
+    }
+	.key.clearKey{
+	  grid-column: span 1;
+	  font-size:18px;
+	  letter-spacing:.5px;
+	}
+
+    .key:active{transform:scale(.99)}
+    .key.empty{background:transparent; border-color:transparent; cursor:default}
+    .key.disabled{opacity:.35; pointer-events:none}
+
+    .clearBtn{
+      width:100%;
+      height:100%;
+      border:none;
+      border-radius:18px;
+      background:transparent;
+      color:rgba(255,255,255,.88);
+      font-size:22px;
+      font-weight:900;
+      letter-spacing:.5px;
+      cursor:pointer;
+    }
+    .clearBtn:active{transform:scale(.995)}
+
+    .flash{
+      position:fixed; inset:0;
+      pointer-events:none;
+      opacity:0;
+      transition: opacity .14s ease;
+    }
+    .flash.ok{background:rgba(255,255,255,.10)}
+    .flash.bad{background:rgba(255,255,255,.06)}
+    .flash.on{opacity:1}
+  
+    @keyframes guideBreath{
+      0%   { opacity:.18; }
+      50%  { opacity:.32; }
+      100% { opacity:.18; }
+    }
+
+    /* 已完成题目：常驻显示完整算式（不随切题清空） */
+    .cell.done{
+      border-color:rgba(255,255,255,.18);
+      background:rgba(255,255,255,.035);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
+    }
+    .cell.done .t{
+      opacity:1 !important;
+      transform:scale(1) !important;
+      font-size:13px;
+      letter-spacing:-0.2px;
+    }
+
+    /* 错题红闪（仅当前格子） */
+    .cell.flash-red{
+      animation: flashRed .28s ease;
+    }
+    @keyframes flashRed{
+      0%{
+        background: rgba(255,60,60,.65);
+        box-shadow: 0 0 0 2px rgba(255,60,60,.85) inset,
+                    0 0 22px rgba(255,60,60,.55);
+      }
+      100%{
+        background: rgba(255,255,255,.02);
+        box-shadow: none;
+      }
+    }
+
+
+    /* 冰淇淋PNG：随进度从下往上“填满” */
+    .iceCreamIcon{
+      position: relative;
+      width: 180px;
+      height: 200px;
+      margin: 6px auto 0;
+      --ice: url('./assets/icecream.png');
+      background-image: var(--ice);
+      background-size:100% 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+    .iceCreamFill{
+      position:absolute;
+      left:0; right:0; bottom:0;
+      height:0%;
+      /* 更明显的填充颜色（在图标内“注入”） */
+      background: linear-gradient(to top, rgba(0,255,214,.92), rgba(0,170,255,.95));
+      opacity: .95;
+      mix-blend-mode: screen;
+      -webkit-mask-image: var(--ice);
+      mask-image: var(--ice);
+      -webkit-mask-size:100% 100%;
+      mask-size:100% 100%;
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+      -webkit-mask-position: center;
+      mask-position: center;
+      transition: height .18s ease;
+      pointer-events:none;
+    }
+    .iceCreamFill{
+      position:absolute;
+      left:0; right:0; bottom:0;
+      height: 0%;
+      background: linear-gradient(180deg, rgba(255,45,149,.95), rgba(255,153,210,.85));
+      /* 用PNG的透明通道做遮罩，只在冰淇淋形状内显示填充 */
+      -webkit-mask-image: url('./assets/icecream.png');
+      -webkit-mask-repeat: no-repeat;
+      -webkit-mask-size:100% 100%;
+      -webkit-mask-position:center center;
+      mask-image: url('./assets/icecream.png');
+      mask-repeat: no-repeat;
+      mask-size:100% 100%;
+      mask-position:center center;
+      opacity: .95;
+      transition: height 120ms linear;
+    }
