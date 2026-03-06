@@ -447,3 +447,119 @@
 
 
     /* 冰淇淋SVG样式 */
+/* 历史记录链接 */
+.historyLink{
+  position:absolute;
+  bottom:8px;
+  right:12px;
+  color:rgba(255,255,255,.4);
+  font-size:12px;
+  text-decoration:none;
+  z-index:100;
+}
+.historyLink:hover{
+  color:rgba(255,255,255,.8);
+}
+
+/* 弹窗 */
+.popup{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.8);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  visibility:hidden;
+  transition:opacity .3s, visibility .3s;
+  z-index:1000;
+}
+.popup.show{
+  opacity:1;
+  visibility:visible;
+}
+.popupContent{
+  background:linear-gradient(180deg, #1a1a2e, #16213e);
+  border-radius:24px;
+  padding:32px 40px;
+  text-align:center;
+  border:2px solid rgba(255,255,255,.1);
+  max-width:320px;
+}
+.popupContent.history{
+  max-width:360px;
+  max-height:70vh;
+  overflow-y:auto;
+}
+.popupContent.best{
+  border-color:#ffd700;
+  box-shadow:0 0 40px rgba(255,215,0,.3);
+}
+.popupTitle{
+  font-size:24px;
+  font-weight:bold;
+  color:#fff;
+  margin-bottom:16px;
+}
+.popupStats{
+  font-size:18px;
+  color:rgba(255,255,255,.8);
+  margin-bottom:24px;
+}
+.popupBtn{
+  background:linear-gradient(180deg, #ff6b9d, #c44569);
+  border:none;
+  border-radius:12px;
+  padding:12px 32px;
+  font-size:16px;
+  font-weight:bold;
+  color:#fff;
+  cursor:pointer;
+  transition:transform .1s;
+}
+.popupBtn:hover{
+  transform:scale(1.05);
+}
+
+/* 历史记录列表 */
+.historyList{
+  text-align:left;
+  max-height:300px;
+  overflow-y:auto;
+  margin-bottom:20px;
+}
+.historyItem{
+  display:flex;
+  justify-content:space-between;
+  padding:10px 0;
+  border-bottom:1px solid rgba(255,255,255,.1);
+}
+.historyDate{
+  color:rgba(255,255,255,.6);
+  font-size:14px;
+}
+.historyTime{
+  color:#ff6b9d;
+  font-weight:bold;
+}
+
+/* 冰淇淋雨 */
+.iceRain{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+  pointer-events:none;
+}
+.iceDrop{
+  position:absolute;
+  top:-30px;
+  width:20px;
+  height:24px;
+  background:linear-gradient(180deg, #ffb6c1, #ffc0cb);
+  border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
+  animation:iceFall linear forwards;
+}
+@keyframes iceFall{
+  0%{transform:translateY(0) rotate(0deg);opacity:1;}
+  100%{transform:translateY(400px) rotate(360deg);opacity:0;}
+}
