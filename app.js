@@ -303,10 +303,11 @@ function setProgress(p){
   progFillEl.style.width = `${(fillRatio*100).toFixed(1)}%`;
 
   // 冰淇淋填充：从下往上（SVG rect控制）
-  // 冰淇淋高度240，从下往上填充
+  // 蛋筒底部在y=210，总填充高度190（从210到20）
   if(iceFillEl){
-    const fillHeight = fillRatio * 240;
-    const fillY = 240 - fillHeight;
+    const totalHeight = 210; // 蛋筒底部到顶部
+    const fillHeight = fillRatio * totalHeight;
+    const fillY = totalHeight - fillHeight;
     iceFillEl.setAttribute('y', fillY);
     iceFillEl.setAttribute('height', fillHeight);
   }
