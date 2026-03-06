@@ -79,7 +79,7 @@
       gap:6px;
     }
 
-    /* 表头单元默认：行头仍保留“格子感” */
+    /* 表头单元默认：行头仍保留"格子感" */
     .hcell{
       width:56px; height:56px;
       border-radius:14px;
@@ -101,7 +101,7 @@
       border-radius:0 !important;
       box-shadow:none !important;
     }
-	
+
 	/* 追加：左边表头（行头）也不要格子，只显示数字 */
 	.leftHead{
 	  border:none !important;
@@ -188,7 +188,7 @@
       transform:translateY(-1px);
       z-index:1;
     }
-	
+
 	.guideV,.guideH{ z-index:1; }
 	.matrix{ position:absolute; z-index:2; }
 
@@ -257,7 +257,7 @@
       filter: drop-shadow(0 10px 16px rgba(0,0,0,.45));
       display:block;
     }
-	
+
 	.iceCreamBox{
 	  position:absolute;
 	  left:12px;
@@ -274,8 +274,8 @@
       filter: drop-shadow(0 10px 18px rgba(0,0,0,.45));
       object-fit:contain;
     }
-	
-	
+
+
     .meltCover{
       position:absolute;
       inset:0;
@@ -405,7 +405,7 @@
     .flash.ok{background:rgba(255,255,255,.10)}
     .flash.bad{background:rgba(255,255,255,.06)}
     .flash.on{opacity:1}
-  
+
     @keyframes guideBreath{
       0%   { opacity:.18; }
       50%  { opacity:.32; }
@@ -442,7 +442,7 @@
     }
 
 
-    /* 冰淇淋PNG：随进度从下往上“填满” */
+    /* 冰淇淋PNG：随进度从下往上"揭开" */
     .iceCreamIcon{
       position: relative;
       width: 180px;
@@ -456,37 +456,14 @@
     }
     .iceCreamFill{
       position:absolute;
-      left:0; right:0; bottom:0;
-      height:0%;
-      /* 更明显的填充颜色（在图标内“注入”） */
-      background: linear-gradient(to top, rgba(0,255,214,.92), rgba(0,170,255,.95));
-      opacity: .95;
-      mix-blend-mode: screen;
-      -webkit-mask-image: var(--ice);
-      mask-image: var(--ice);
-      -webkit-mask-size:100% 100%;
-      mask-size:100% 100%;
-      -webkit-mask-repeat: no-repeat;
-      mask-repeat: no-repeat;
-      -webkit-mask-position: center;
-      mask-position: center;
-      transition: height .18s ease;
+      left:0; right:0; top:0; bottom:0;
+      background-image: var(--ice);
+      background-size:100% 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+      /* 从下往上揭开：clip-path 从 inset(100% 0 0 0) 到 inset(0% 0 0 0) */
+      -webkit-clip-path: inset(100% 0 0 0);
+      clip-path: inset(100% 0 0 0);
+      transition: -webkit-clip-path .18s ease, clip-path .18s ease;
       pointer-events:none;
-    }
-    .iceCreamFill{
-      position:absolute;
-      left:0; right:0; bottom:0;
-      height: 0%;
-      background: linear-gradient(180deg, rgba(255,45,149,.95), rgba(255,153,210,.85));
-      /* 用PNG的透明通道做遮罩，只在冰淇淋形状内显示填充 */
-      -webkit-mask-image: url('./assets/icecream.png');
-      -webkit-mask-repeat: no-repeat;
-      -webkit-mask-size:100% 100%;
-      -webkit-mask-position:center center;
-      mask-image: url('./assets/icecream.png');
-      mask-repeat: no-repeat;
-      mask-size:100% 100%;
-      mask-position:center center;
-      opacity: .95;
-      transition: height 120ms linear;
     }
