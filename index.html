@@ -38,9 +38,26 @@
             <div class="scoreText" id="scoreText">0/81</div>
 
 			<div class="iceCreamBox">
-  <div class="iceCreamIcon" aria-label="ice cream">
-    <div class="iceCreamFill" id="iceFill"></div>
-  </div>
+  <svg class="iceCreamSvg" viewBox="0 0 200 240" aria-label="ice cream">
+    <defs>
+      <linearGradient id="iceCreamGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+        <stop offset="0%" class="grad-stop" id="gradStop1" stop-color="#ffb6c1"/>
+        <stop offset="100%" class="grad-stop" id="gradStop2" stop-color="#ffe4e1"/>
+      </linearGradient>
+      <clipPath id="iceCreamClip">
+        <!-- 冰淇淋形状 -->
+        <path d="M100 20 C60 20 40 50 40 90 L40 180 C40 200 60 220 100 220 C140 220 160 200 160 180 L160 90 C160 50 140 20 100 20 Z"/>
+        <!-- 甜筒 -->
+        <path d="M60 180 L100 230 L140 180 L130 180 C130 170 120 165 100 165 C80 165 70 170 70 180 Z"/>
+      </clipPath>
+    </defs>
+    <!-- 底图 - 灰色轮廓 -->
+    <g clip-path="url(#iceCreamClip)" opacity="0.15">
+      <rect x="0" y="0" width="200" height="240" fill="#666"/>
+    </g>
+    <!-- 填充层 - 从下往上 -->
+    <rect id="iceFill" x="0" y="240" width="200" height="0" fill="url(#iceCreamGrad)" clip-path="url(#iceCreamClip)" class="ice-fill-rect"/>
+  </svg>
 </div>
             <div class="progBar"><div class="progFill" id="progFill"></div></div>
 
