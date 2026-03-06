@@ -310,6 +310,12 @@ function setProgress(p){
     iceFillEl.style.clipPath = `inset(${revealPercent}% 0 0 0)`;
     iceFillEl.style.webkitClipPath = `inset(${revealPercent}% 0 0 0)`;
   }
+
+  // 完成81题后，去掉黑白滤镜，显示完整彩色冰淇淋
+  if(progress >= MAX_PROGRESS){
+    const iceIcon = document.querySelector('.iceCreamIcon');
+    if(iceIcon) iceIcon.style.filter = 'none';
+  }
 }
 
 function setInput(s){
