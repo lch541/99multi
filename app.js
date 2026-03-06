@@ -302,9 +302,13 @@ function setProgress(p){
 
   progFillEl.style.width = `${(fillRatio*100).toFixed(1)}%`;
 
-  // 冰淇淋填充：随非线性进度从下往上
+  // 冰淇淋揭开：从下往上 (clip-path: inset(top 0 0 0))
+  // fillRatio=0 -> inset(100% 0 0 0) (全隐藏)
+  // fillRatio=1 -> inset(0% 0 0 0) (全显示)
+  const revealPercent = Math.round((1 - fillRatio) * 100);
   if(iceFillEl){
-    iceFillEl.style.height = `${(fillRatio*100).toFixed(1)}%`;
+    iceFillEl.style.clipPath = `inset(${revealPercent}% 0 0 0)`;
+    iceFillEl.style.webkitClipPath = `inset(${revealPercent}% 0 0 0)`;
   }
 }
 
