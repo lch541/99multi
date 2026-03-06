@@ -302,19 +302,19 @@ function setProgress(p){
 
   progFillEl.style.width = `${(fillRatio*100).toFixed(1)}%`;
 
-  // 冰淇淋揭开：从下往上 (clip-path: inset(top 0 0 0))
-  // fillRatio=0 -> inset(100% 0 0 0) (全隐藏)
-  // fillRatio=1 -> inset(0% 0 0 0) (全显示)
-  const revealPercent = Math.round((1 - fillRatio) * 100);
+  // 冰淇淋填充：从下往上（SVG rect控制）
+  // 冰淇淋高度240，从下往上填充
   if(iceFillEl){
-    // 用height控制彩色渐变层高度（从下往上）
-    iceFillEl.style.height = `${(fillRatio*100).toFixed(1)}%`;
+    const fillHeight = fillRatio * 240;
+    const fillY = 240 - fillHeight;
+    iceFillEl.setAttribute('y', fillY);
+    iceFillEl.setAttribute('height', fillHeight);
   }
 
-  // 完成81题后，去掉黑白滤镜，显示完整彩色冰淇淋
+  // 完成81题后，完全显示（底图不再透明）
   if(progress >= MAX_PROGRESS){
-    const iceIcon = document.querySelector('.iceCreamIcon');
-    if(iceIcon) iceIcon.style.filter = 'none';
+    const iceSvg = document.querySelector('.iceCreamSvg g:first-child');
+    if(iceSvg) iceSvg.setAttribute('opacity', '0');
   }
 }
 
