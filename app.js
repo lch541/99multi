@@ -415,6 +415,9 @@ function mark(correct){
   cell.el.classList.add(correct ? "correct" : "wrong");
 }
 
+let totalTimeMs = 0;
+let questionTimes = [];
+
 function newQuestion(){
   // 完成：81题都答对（队列清空）后暂停
   if(progress >= MAX_PROGRESS || deck.length === 0){
@@ -430,9 +433,14 @@ function newQuestion(){
     guideVEl.style.display = "none";
     guideHEl.style.display = "none";
 
+    // 保存记录并显示弹窗
+    const timeMs = Date.now() - sessionStart;
+    saveRecord(timeMs, questionTimes.length);
+
     // 保持当前画面，不再出题
     return;
   }
+  sessionStart = Date.now();
   setKeypadLocked(false);
 
   // 取队首（按难度排序，且会在答错/超时后被旋转到队尾）
@@ -508,3 +516,102 @@ setProgress(0);
 setHeaders(1,1);
 timeDigitalEl.textContent = "00:10";
 newQuestion();
+
+/* API 和弹窗功能 */
+let sessionStart = Date.now();
+
+function fmtTime(ms) {
+  const s = Math.floor(ms / 1000);
+  const m = Math.floor(s / 60);
+  const sec = s % 60;
+  return m > 0 ? `${m}分${sec}秒` : `${sec}秒`;
+}
+
+function saveRecord(timeMs, correctCount) {
+  const record = {
+    timeMs: timeMs,
+    correct: correctCount,
+    date: new Date().toLocaleDateString('zh-CN')
+  };
+  
+  fetch('http://66.63.168.191:8889/record', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(record)
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (data.isNewBest) {
+      showBestPopup(timeMs);
+    } else {
+      showCompletePopup(timeMs);
+    }
+  })
+  .catch(e => {
+    console.error('Save record error:', e);
+    showCompletePopup(timeMs);
+  });
+}
+
+function showCompletePopup(timeMs) {
+  const popup = document.getElementById('completePopup');
+  const stats = document.getElementById('popupStats');
+  stats.innerHTML = `用时：${fmtTime(timeMs)}`;
+  popup.classList.add('show');
+}
+
+function showBestPopup(timeMs) {
+  const popup = document.getElementById('进步Popup');
+  const stats = document.getElementById('进步Stats');
+  stats.innerHTML = `新纪录：${fmtTime(timeMs)} 🎉`;
+  popup.classList.add('show');
+  createIceRain();
+}
+
+function closePopup() {
+  document.getElementById('completePopup').classList.remove('show');
+}
+
+function closeBestPopup() {
+  document.getElementById('进步Popup').classList.remove('show');
+  document.getElementById('iceRain').innerHTML = '';
+}
+
+function showHistory() {
+  fetch('http://66.63.168.191:8889/records')
+    .then(r => r.json())
+    .then(records => {
+      const list = document.getElementById('historyList');
+      if (records.length === 0) {
+        list.innerHTML = '<p>暂无记录，开始练习吧！</p>';
+      } else {
+        list.innerHTML = records.map(r => `
+          <div class="historyItem">
+            <span class="historyDate">${r.date}</span>
+            <span class="historyTime">${fmtTime(r.timeMs)}</span>
+          </div>
+        `).join('');
+      }
+      document.getElementById('historyPopup').classList.add('show');
+    })
+    .catch(e => {
+      document.getElementById('historyList').innerHTML = '<p>加载失败</p>';
+      document.getElementById('historyPopup').classList.add('show');
+    });
+}
+
+function closeHistory() {
+  document.getElementById('historyPopup').classList.remove('show');
+}
+
+function createIceRain() {
+  const container = document.getElementById('iceRain');
+  for (let i = 0; i < 30; i++) {
+    const ice = document.createElement('div');
+    ice.className = 'iceDrop';
+    ice.style.left = Math.random() * 100 + '%';
+    ice.style.animationDelay = Math.random() * 0.5 + 's';
+    ice.style.animationDuration = (1 + Math.random()) + 's';
+    container.appendChild(ice);
+  }
+}
