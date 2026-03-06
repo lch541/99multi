@@ -284,13 +284,27 @@ function flashBad(){
 
 function setProgress(p){
   progress = Math.max(0, Math.min(MAX_PROGRESS, p));
-  const r = progress / MAX_PROGRESS;
   scoreTextEl.textContent = `${progress}/${MAX_PROGRESS}`;
-  progFillEl.style.width = `${(r*100).toFixed(1)}%`;
 
-  // 冰淇淋填充：随进度从下往上（更明显的颜色）
+  // 非线性填充：前期快、后期慢（前期每题显现多，后期每题显现少）
+  let fillRatio;
+  if (progress <= 30) {
+    // 前期：0-30题，每题约2%
+    fillRatio = progress * 0.02;
+  } else if (progress <= 60) {
+    // 中期：30-60题，每题约1%
+    fillRatio = 0.6 + (progress - 30) * 0.01;
+  } else {
+    // 后期：60-81题，每题约0.5%
+    fillRatio = 0.9 + (progress - 60) * 0.005;
+  }
+  fillRatio = Math.min(1, fillRatio);
+
+  progFillEl.style.width = `${(fillRatio*100).toFixed(1)}%`;
+
+  // 冰淇淋填充：随非线性进度从下往上
   if(iceFillEl){
-    iceFillEl.style.height = `${(r*100).toFixed(1)}%`;
+    iceFillEl.style.height = `${(fillRatio*100).toFixed(1)}%`;
   }
 }
 
