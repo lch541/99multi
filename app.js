@@ -307,8 +307,8 @@ function setProgress(p){
   // fillRatio=1 -> inset(0% 0 0 0) (全显示)
   const revealPercent = Math.round((1 - fillRatio) * 100);
   if(iceFillEl){
-    iceFillEl.style.clipPath = `inset(${revealPercent}% 0 0 0)`;
-    iceFillEl.style.webkitClipPath = `inset(${revealPercent}% 0 0 0)`;
+    // 用height控制彩色渐变层高度（从下往上）
+    iceFillEl.style.height = `${(fillRatio*100).toFixed(1)}%`;
   }
 
   // 完成81题后，去掉黑白滤镜，显示完整彩色冰淇淋
