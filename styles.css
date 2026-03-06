@@ -453,6 +453,9 @@
       background-size:100% 100%;
       background-repeat: no-repeat;
       background-position: center;
+      /* 初始显示黑白版本 */
+      filter: grayscale(100%) brightness(1.1);
+      transition: filter .3s ease;
     }
     .iceCreamFill{
       position:absolute;
@@ -461,7 +464,7 @@
       background-size:100% 100%;
       background-repeat: no-repeat;
       background-position: center;
-      /* 从下往上揭开：clip-path 从 inset(100% 0 0 0) 到 inset(0% 0 0 0) */
+      /* 从下往上揭开：100% hidden -> 0% hidden (fully revealed) */
       -webkit-clip-path: inset(100% 0 0 0);
       clip-path: inset(100% 0 0 0);
       transition: -webkit-clip-path .18s ease, clip-path .18s ease;
