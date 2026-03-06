@@ -269,11 +269,15 @@
 	  justify-content:center;
 	}
 
-	.iceCreamImg{
-      height:160px;
-      filter: drop-shadow(0 10px 18px rgba(0,0,0,.45));
-      object-fit:contain;
-    }
+	.iceCreamSvg{
+	  width:140px;
+	  height:170px;
+	  filter: drop-shadow(0 8px 16px rgba(0,0,0,.3));
+	}
+
+	.ice-fill-rect{
+	  transition: y .2s ease, height .2s ease;
+	}
 
 
     .meltCover{
@@ -442,44 +446,4 @@
     }
 
 
-    /* 冰淇淋PNG：随进度从下往上"揭开" */
-    .iceCreamIcon{
-      position: relative;
-      width: 180px;
-      height: 200px;
-      margin: 6px auto 0;
-      --ice: url('./assets/icecream.png');
-      background-image: var(--ice);
-      background-size:100% 100%;
-      background-repeat: no-repeat;
-      background-position: center;
-      /* 初始显示黑白版本 */
-      filter: grayscale(100%) brightness(0.3) opacity(0.15);
-      transition: filter .3s ease;
-    }
-    /* 彩色渐变覆盖层：从下往上reveal */
-    /* 冰淇淋内部填充效果 */
-    .iceCreamFill{
-      position:absolute;
-      left:0; right:0; bottom:0;
-      height:0%;
-      /* 冰淇淋内部填充的颜色 - 像灌进去的彩色奶油 */
-      background: linear-gradient(180deg, 
-        #ffb6c1 0%,    /* 浅粉 */
-        #ffc0cb 50%,   /* 粉色 */
-        #ffe4e1 100%   /* 浅杏色 */
-      );
-      /* 用PNG的透明通道做遮罩，只在冰淇淋形状内显示填充 */
-      -webkit-mask-image: url('./assets/icecream.png');
-      -webkit-mask-size:100% 100%;
-      -webkit-mask-repeat: no-repeat;
-      -webkit-mask-position: center;
-      -webkit-mask-composite: source-in;
-      mask-image: url('./assets/icecream.png');
-      mask-size:100% 100%;
-      mask-repeat: no-repeat;
-      mask-position: center;
-      mask-composite: intersect;
-      transition: height .25s ease;
-      pointer-events:none;
-    }
+    /* 冰淇淋SVG样式 */
