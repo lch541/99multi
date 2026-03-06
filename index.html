@@ -75,12 +75,42 @@
             <div class="keypadGrid" id="keypad"></div>
           </div>
 
+          <!-- 历史记录链接 -->
+          <a href="#" class="historyLink" id="historyLink" onclick="showHistory(); return false;">历史记录</a>
+
 
         </div>
       </div>
     </div>
   </div>
 
+  <!-- 恭喜弹窗 -->
+  <div class="popup" id="completePopup">
+    <div class="popupContent">
+      <div class="popupTitle">🎉 恭喜获得一个冰淇淋券！</div>
+      <div class="popupStats" id="popupStats"></div>
+      <button class="popupBtn" onclick="closePopup()">太棒了！</button>
+    </div>
+  </div>
+
+  <!-- 进步弹窗 -->
+  <div class="popup" id="进步Popup">
+    <div class="popupContent best">
+      <div class="popupTitle">🏆 又进步了！</div>
+      <div class="popupStats" id="进步Stats"></div>
+      <div class="iceRain" id="iceRain"></div>
+      <button class="popupBtn" onclick="closeBestPopup()">继续加油！</button>
+    </div>
+  </div>
+
+  <!-- 历史记录弹窗 -->
+  <div class="popup" id="historyPopup">
+    <div class="popupContent history">
+      <div class="popupTitle">📊 练习历史</div>
+      <div class="historyList" id="historyList"></div>
+      <button class="popupBtn" onclick="closeHistory()">关闭</button>
+    </div>
+  </div>
 
 </body>
 </html>
