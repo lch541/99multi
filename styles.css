@@ -457,16 +457,27 @@
       filter: grayscale(100%) brightness(1.1);
       transition: filter .3s ease;
     }
+    /* 彩色渐变覆盖层：从下往上reveal */
     .iceCreamFill{
       position:absolute;
-      left:0; right:0; top:0; bottom:0;
-      background-image: var(--ice);
-      background-size:100% 100%;
-      background-repeat: no-repeat;
-      background-position: center;
-      /* 从下往上揭开：100% hidden -> 0% hidden (fully revealed) */
-      -webkit-clip-path: inset(100% 0 0 0);
-      clip-path: inset(100% 0 0 0);
-      transition: -webkit-clip-path .18s ease, clip-path .18s ease;
+      left:0; right:0; bottom:0;
+      height:0%;
+      /* 彩色冰淇淋渐变 */
+      background: linear-gradient(180deg, 
+        rgba(255,182,193,0.95) 0%, 
+        rgba(255,218,185,0.95) 30%,
+        rgba(173,216,230,0.95) 60%,
+        rgba(144,238,144,0.95) 100%
+      );
+      /* 用PNG的透明通道做遮罩，只在冰淇淋形状内显示 */
+      -webkit-mask-image: url('./assets/icecream.png');
+      -webkit-mask-size:100% 100%;
+      -webkit-mask-repeat: no-repeat;
+      -webkit-mask-position: center;
+      mask-image: url('./assets/icecream.png');
+      mask-size:100% 100%;
+      mask-repeat: no-repeat;
+      mask-position: center;
+      transition: height .2s ease;
       pointer-events:none;
     }
