@@ -35,7 +35,7 @@ const flashBadEl = document.getElementById("flashBad");
 const CELL = 56, GAP = 6, OFFSET = 8;
 
 const MAX_PROGRESS = 81;
-const QUESTION_TIME_MS = 10_000;
+const QUESTION_TIME_MS = 30_000;
 
 
 // ===== 81题队列：按“口诀难度”从难到易排序（难->易） =====
@@ -530,7 +530,7 @@ deck = buildDeck81();
 completed = Array.from({length:10}, ()=>Array(10).fill(false));
 setProgress(0);
 setHeaders(1,1);
-timeDigitalEl.textContent = "00:10";
+timeDigitalEl.textContent = "00:30";
 newQuestion();
 
 /* API 和弹窗功能 */
