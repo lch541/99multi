@@ -402,7 +402,8 @@ function buildKeypad(){
         deck = buildDeck81();
         completed = Array.from({length:10}, ()=>Array(10).fill(false));
         for(const c of dataCells){ c.el.classList.remove("done","active","correct","wrong"); c.t.textContent=""; }
-        setProgress(0);
+        sessionStart = Date.now();
+setProgress(0);
         newQuestion();
       });
 	}else{
@@ -460,7 +461,7 @@ function newQuestion(){
   setKeypadLocked(false);
 
   // 取队首（按难度排序，且会在答错/超时后被旋转到队尾）
-  console.log("First question:", deck[0]); const q = deck[0];
+  const q = deck[0];
   setActive(q.a, q.b);
 
   // clear input for this question (do not touch previous completed cells)
@@ -528,13 +529,14 @@ function evaluate(){
 /* init */
 deck = buildDeck81();
 completed = Array.from({length:10}, ()=>Array(10).fill(false));
+let sessionStart = Date.now();
 setProgress(0);
 setHeaders(1,1);
 timeDigitalEl.textContent = "00:30";
 newQuestion();
 
 /* API 和弹窗功能 */
-let sessionStart = Date.now();
+sessionStart = Date.now();
 
 function fmtTime(ms) {
   const s = Math.floor(ms / 1000);
