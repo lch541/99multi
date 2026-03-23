@@ -357,6 +357,19 @@ function fmtMMSS(msLeft){
   const ss = String(s%60).padStart(2,"0");
   return `${mm}:${ss}`;
 }
+function onTimeout(){
+  stopTimer();
+  setKeypadLocked(true);
+  flashBad();
+  const cell = dataCells[active.idx];
+  cell.el.classList.add('flash-red');
+  setTimeout(()=>cell.el.classList.remove('flash-red'), 300);
+  cell.t.textContent = `${active.a}×${active.b}=${active.ans}`;
+  // 超时也放到队尾
+  if(deck.length>0) deck.push(deck.shift());
+  setTimeout(()=>newQuestion(), 1000);
+}
+
 function startTimer(){
   stopTimer();
   qStart = nowMs();
@@ -440,7 +453,10 @@ function newQuestion(){
     // 保持当前画面，不再出题
     return;
   }
-  sessionStart = Date.now();
+  // 只在游戏刚开始时设置 sessionStart
+  if (progress === 0) {
+    sessionStart = Date.now();
+  }
   setKeypadLocked(false);
 
   // 取队首（按难度排序，且会在答错/超时后被旋转到队尾）
