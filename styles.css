@@ -563,3 +563,28 @@
   0%{transform:translateY(0) rotate(0deg);opacity:1;}
   100%{transform:translateY(400px) rotate(360deg);opacity:0;}
 }
+
+/* 容器 + 底部 */
+.container{
+  position:absolute;
+  left:0;
+  top:0;
+  right:0;
+  bottom:40px;
+}
+.footer{
+  position:absolute;
+  left:0;
+  bottom:0;
+  right:0;
+  height:40px;
+  background:rgba(0,0,0,0.4);
+  display:flex;
+  align-items:center;
+  padding-left:20px;
+}
+.footer .historyLink{
+  color:rgba(255,255,255,.6);
+  font-size:14px;
+  text-decoration:none;
+}

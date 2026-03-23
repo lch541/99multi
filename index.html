@@ -17,27 +17,28 @@
   <div class="flash ok" id="flashOk"></div>
   <div class="flash bad" id="flashBad"></div>
 
-  <div class="stage fit" id="stage">
-    <div class="frame">
-      <!-- LEFT -->
-      <div class="leftCard">
-        <div class="gridInner">
-          <div class="matrixBox">
-            <div class="guideV" id="guideV"></div>
-            <div class="guideH" id="guideH"></div>
-            <div class="matrix" id="matrix"></div>
+  <div class="container">
+    <div class="stage fit" id="stage">
+      <div class="frame">
+        <!-- LEFT -->
+        <div class="leftCard">
+          <div class="gridInner">
+            <div class="matrixBox">
+              <div class="guideV" id="guideV"></div>
+              <div class="guideH" id="guideH"></div>
+              <div class="matrix" id="matrix"></div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- RIGHT -->
-      <div class="rightCard">
-        <div class="sideInner">
-          <div class="sec progress">
-            <div class="label">progress</div>
-            <div class="scoreText" id="scoreText">0/81</div>
+        <!-- RIGHT -->
+        <div class="rightCard">
+          <div class="sideInner">
+            <div class="sec progress">
+              <div class="label">progress</div>
+              <div class="scoreText" id="scoreText">0/81</div>
 
-			<div class="iceCreamBox">
+			  <div class="iceCreamBox">
   <svg class="iceCreamSvg" viewBox="0 0 200 240" aria-label="ice cream">
     <defs>
       <linearGradient id="iceCreamGrad" x1="0%" y1="100%" x2="0%" y2="0%">
@@ -59,29 +60,31 @@
     <rect id="iceFill" x="0" y="240" width="200" height="0" fill="url(#iceCreamGrad)" clip-path="url(#iceCreamClip)" class="ice-fill-rect"/>
   </svg>
 </div>
-            <div class="progBar"><div class="progFill" id="progFill"></div></div>
+              <div class="progBar"><div class="progFill" id="progFill"></div></div>
+
+            </div>
+
+            <div class="sec time">
+              <div class="label">time</div>
+              <div class="timeBar"><div class="timeFill" id="timeFill"></div></div>
+              <div class="timeDigital" id="timeDigital">00:10</div>
+            </div>
+
+            <div class="sec keypad">
+              <div class="inputHint">input</div>
+              <div class="inputValue" id="inputValue"> </div>
+              <div class="keypadGrid" id="keypad"></div>
+            </div>
 
           </div>
-
-          <div class="sec time">
-            <div class="label">time</div>
-            <div class="timeBar"><div class="timeFill" id="timeFill"></div></div>
-            <div class="timeDigital" id="timeDigital">00:10</div>
-          </div>
-
-          <div class="sec keypad">
-            <div class="inputHint">input</div>
-            <div class="inputValue" id="inputValue"> </div>
-            <div class="keypadGrid" id="keypad"></div>
-          </div>
-
-          <!-- 历史记录链接 -->
-          <a href="#" class="historyLink" id="historyLink" onclick="showHistory(); return false;">历史记录</a>
-
-
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- 底部 -->
+  <div class="footer">
+    <a href="#" class="historyLink" onclick="showHistory(); return false;">历史记录</a>
   </div>
 
   <!-- 恭喜弹窗 -->
