@@ -440,10 +440,7 @@ function newQuestion(){
     // 保持当前画面，不再出题
     return;
   }
-  // 只在游戏刚开始时设置 sessionStart
-  if (progress === 0) {
-    sessionStart = Date.now();
-  }
+  sessionStart = Date.now();
   setKeypadLocked(false);
 
   // 取队首（按难度排序，且会在答错/超时后被旋转到队尾）
