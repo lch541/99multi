@@ -460,7 +460,7 @@ function newQuestion(){
   setKeypadLocked(false);
 
   // 取队首（按难度排序，且会在答错/超时后被旋转到队尾）
-  const q = deck[0];
+  console.log("First question:", deck[0]); const q = deck[0];
   setActive(q.a, q.b);
 
   // clear input for this question (do not touch previous completed cells)
