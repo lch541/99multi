@@ -581,9 +581,11 @@
   background:rgba(0,0,0,0.4);
   display:flex;
   align-items:center;
-  padding-left:20px;
+  padding-left:0;
 }
 .footer .historyLink{
+  position:absolute;
+  left:20px;
   color:rgba(255,255,255,.6);
   font-size:14px;
   text-decoration:none;
